@@ -179,7 +179,8 @@ void join_group(vector<string> inpt, int client_socket, string client_uid){
     writeLog("join_group function ..");
 
     if(grpAdmins.find(inpt[1]) == grpAdmins.end()){
-        write(client_socket, "Invalid group ID.", 19);
+        const char* error_msg = "Invalid group ID.";
+        write(client_socket, error_msg, strlen(error_msg));
     }
     else if(groupMembers[inpt[1]].find(client_uid) == groupMembers[inpt[1]].end()){
         grpPendngRequests[inpt[1]].insert(client_uid);
@@ -234,7 +235,8 @@ void accept_request(vector<string> inpt, int client_socket, string client_uid){
 
     if(grpAdmins.find(inpt[1]) == grpAdmins.end()){
         writeLog("inside accept_request if");
-        write(client_socket, "Invalid group ID.", 19);
+        const char* error_msg = "Invalid group ID.";
+        write(client_socket, error_msg, strlen(error_msg));
     }
     else if(grpAdmins.find(inpt[1])->second == client_uid){
         writeLog("inside accept_request else if with pending list:");
@@ -248,7 +250,8 @@ void accept_request(vector<string> inpt, int client_socket, string client_uid){
     else{
         writeLog("inside accept_request else");
         //cout << grpAdmins.find(inpt[1])->second << " " << client_uid <<  endl;
-        write(client_socket, "You are not the admin of this group", 35);
+        const char* error_msg = "You are not the admin of this group";
+        write(client_socket, error_msg, strlen(error_msg));
     }
     
 }
@@ -262,7 +265,8 @@ void leave_group(vector<string> inpt, int client_socket, string client_uid){
     write(client_socket, "Leaving group...", 17);
 
     if(grpAdmins.find(inpt[1]) == grpAdmins.end()){
-        write(client_socket, "Invalid group ID.", 19);
+        const char* error_msg = "Invalid group ID.";
+        write(client_socket, error_msg, strlen(error_msg));
     }
     else if(groupMembers[inpt[1]].find(client_uid) != groupMembers[inpt[1]].end()){
         if(grpAdmins[inpt[1]] == client_uid){
@@ -291,7 +295,8 @@ void list_files(vector<string> inpt, int client_socket){
     writeLog("dum read");
 
     if(grpAdmins.find(inpt[1]) == grpAdmins.end()){
-        write(client_socket, "Invalid group ID.", 19);
+        const char* error_msg = "Invalid group ID.";
+        write(client_socket, error_msg, strlen(error_msg));
     }
     else if(seederList[inpt[1]].size() == 0){
         write(client_socket, "No files found.", 15);
@@ -318,7 +323,8 @@ void stop_share(vector<string> inpt, int client_socket, string client_uid){
         return;
     }
     if(grpAdmins.find(inpt[1]) == grpAdmins.end()){
-        write(client_socket, "Invalid group ID.", 19);
+        const char* error_msg = "Invalid group ID.";
+        write(client_socket, error_msg, strlen(error_msg));
     }
     else if(seederList[inpt[1]].find(inpt[2]) == seederList[inpt[1]].end()){
         write(client_socket, "File not yet shared in the group", 32);
